@@ -1,17 +1,3 @@
-/*********************************************************************
- This is an example for our nRF51822 based Bluefruit LE modules
-
- Pick one up today in the adafruit shop!
-
- Adafruit invests time and resources providing this open source code,
- please support Adafruit and open-source hardware by purchasing
- products from Adafruit!
-
- MIT license, check LICENSE for more information
- All text above, and the splash screen below must be included in
- any redistribution
-*********************************************************************/
-
 #include <string.h>
 #include <Arduino.h>
 #include <SPI.h>
@@ -25,61 +11,12 @@
   #include <SoftwareSerial.h>
 #endif
 
-/*=========================================================================
-    APPLICATION SETTINGS
-
-    FACTORYRESET_ENABLE       Perform a factory reset when running this sketch
-   
-                              Enabling this will put your Bluefruit LE module
-                              in a 'known good' state and clear any config
-                              data set in previous sketches or projects, so
-                              running this at least once is a good idea.
-   
-                              When deploying your project, however, you will
-                              want to disable factory reset by setting this
-                              value to 0.  If you are making changes to your
-                              Bluefruit LE device via AT commands, and those
-                              changes aren't persisting across resets, this
-                              is the reason why.  Factory reset will erase
-                              the non-volatile memory where config data is
-                              stored, setting it back to factory default
-                              values.
-       
-                              Some sketches that require you to bond to a
-                              central device (HID mouse, keyboard, etc.)
-                              won't work at all with this feature enabled
-                              since the factory reset will clear all of the
-                              bonding data stored on the chip, meaning the
-                              central device won't be able to reconnect.
-    MINIMUM_FIRMWARE_VERSION  Minimum firmware version to have some new features
-    MODE_LED_BEHAVIOUR        LED activity, valid options are
-                              "DISABLE" or "MODE" or "BLEUART" or
-                              "HWUART"  or "SPI"  or "MANUAL"
-    -----------------------------------------------------------------------*/
     #define FACTORYRESET_ENABLE         1
     #define MINIMUM_FIRMWARE_VERSION    "0.6.6"
     #define MODE_LED_BEHAVIOUR          "MODE"
-/*=========================================================================*/
-
-// Create the bluefruit object, either software serial...uncomment these lines
-/*
-SoftwareSerial bluefruitSS = SoftwareSerial(BLUEFRUIT_SWUART_TXD_PIN, BLUEFRUIT_SWUART_RXD_PIN);
-
-Adafruit_BluefruitLE_UART ble(bluefruitSS, BLUEFRUIT_UART_MODE_PIN,
-                      BLUEFRUIT_UART_CTS_PIN, BLUEFRUIT_UART_RTS_PIN);
-*/
-
-/* ...or hardware serial, which does not need the RTS/CTS pins. Uncomment this line */
-// Adafruit_BluefruitLE_UART ble(BLUEFRUIT_HWSERIAL_NAME, BLUEFRUIT_UART_MODE_PIN);
 
 /* ...hardware SPI, using SCK/MOSI/MISO hardware SPI pins and then user selected CS/IRQ/RST */
 Adafruit_BluefruitLE_SPI ble(BLUEFRUIT_SPI_CS, BLUEFRUIT_SPI_IRQ, BLUEFRUIT_SPI_RST);
-
-/* ...software SPI, using SCK/MOSI/MISO user-defined SPI pins and then user selected CS/IRQ/RST */
-//Adafruit_BluefruitLE_SPI ble(BLUEFRUIT_SPI_SCK, BLUEFRUIT_SPI_MISO,
-//                             BLUEFRUIT_SPI_MOSI, BLUEFRUIT_SPI_CS,
-//                             BLUEFRUIT_SPI_IRQ, BLUEFRUIT_SPI_RST);
-
 
 // A small helper
 void error(const __FlashStringHelper*err) {
@@ -108,7 +45,7 @@ void setup(void)
   delay(500);
 
   Serial.begin(115200);
-  Serial.println(F("Adafruit Bluefruit App Controller Example"));
+  Serial.println(F("Adafruit Bluefruit App Controller"));
   Serial.println(F("-----------------------------------------"));
 
   /* Initialise the module */
@@ -138,7 +75,7 @@ void setup(void)
   ble.info();
 
   Serial.println(F("Please use Adafruit Bluefruit LE app to connect in Controller mode"));
-  Serial.println(F("Then activate/use the sensors, color picker, game controller, etc!"));
+  Serial.println(F("Then activate/use the game controller!"));
   Serial.println();
 
   ble.verbose(false);  // debug info is a little annoying after this point!
@@ -148,7 +85,7 @@ void setup(void)
       delay(500);
   }
 
-  Serial.println(F("******************************"));
+ /* Serial.println(F("******************************"));
 
   // LED Activity command is only supported from 0.6.6
   if ( ble.isVersionAtLeast(MINIMUM_FIRMWARE_VERSION) )
@@ -156,7 +93,7 @@ void setup(void)
     // Change Mode LED Activity
     Serial.println(F("Change LED activity to " MODE_LED_BEHAVIOUR));
     ble.sendCommandCheckOK("AT+HWModeLED=" MODE_LED_BEHAVIOUR);
-  }
+  }*/
 
   // Set Bluefruit to DATA mode
   Serial.println( F("Switching to DATA mode!") );
@@ -173,100 +110,119 @@ void setup(void)
 /**************************************************************************/
 void loop(void)
 {
-  /* Wait for new data to arrive */
-  uint8_t len = readPacket(&ble, BLE_READPACKET_TIMEOUT);
-  if (len == 0) return;
 
-  /* Got a packet! */
-  // printHex(packetbuffer, len);
+    Serial.println("No Bluetooth Connection Detected!");  
 
-  // Color
-  if (packetbuffer[1] == 'C') {
-    uint8_t red = packetbuffer[2];
-    uint8_t green = packetbuffer[3];
-    uint8_t blue = packetbuffer[4];
-    Serial.print ("RGB #");
-    if (red < 0x10) Serial.print("0");
-    Serial.print(red, HEX);
-    if (green < 0x10) Serial.print("0");
-    Serial.print(green, HEX);
-    if (blue < 0x10) Serial.print("0");
-    Serial.println(blue, HEX);
-  }
+  /*enclose all code within this loop so that nothing runs if you lose blue tooth connectivity*/
+    while (ble.isConnected()) {  
 
-  // Buttons
-  if (packetbuffer[1] == 'B') {
-    uint8_t buttnum = packetbuffer[2] - '0';
-    boolean pressed = packetbuffer[3] - '0';
-    Serial.print ("Button "); Serial.print(buttnum);
-    if (pressed) {
-      Serial.println(" pressed");
-    } else {
-      Serial.println(" released");
+          //Serial.println("Connected and READY to GO!");
+
+          /* Wait for new data to arrive */
+          uint8_t len = readPacket(&ble, BLE_READPACKET_TIMEOUT);
+          /*if packet is empty then skip*/
+          if (len == 0) return;
+
+          /* Got a packet! use this as a debug statement to see what packet came in */
+          // printHex(packetbuffer, len);
+
+          /*read the second character in the packet if its a B then its a button press*/
+          if (packetbuffer[1] == 'B') {
+            //create an integer and convert 3rd character from a char into an integer
+            uint8_t buttnum = packetbuffer[2] - '0';
+            //create a boolean variable and convert 4th character from a char to a boolean
+            boolean pressed = packetbuffer[3] - '0';
+           
+          buttoncommands(buttnum,pressed);  //call function that takes actions for each button
+           
+          }
     }
-  }
+ }
 
-  // GPS Location
-  if (packetbuffer[1] == 'L') {
-    float lat, lon, alt;
-    lat = parsefloat(packetbuffer+2);
-    lon = parsefloat(packetbuffer+6);
-    alt = parsefloat(packetbuffer+10);
-    Serial.print("GPS Location\t");
-    Serial.print("Lat: "); Serial.print(lat, 4); // 4 digits of precision!
-    Serial.print('\t');
-    Serial.print("Lon: "); Serial.print(lon, 4); // 4 digits of precision!
-    Serial.print('\t');
-    Serial.print(alt, 4); Serial.println(" meters");
-  }
 
-  // Accelerometer
-  if (packetbuffer[1] == 'A') {
-    float x, y, z;
-    x = parsefloat(packetbuffer+2);
-    y = parsefloat(packetbuffer+6);
-    z = parsefloat(packetbuffer+10);
-    Serial.print("Accel\t");
-    Serial.print(x); Serial.print('\t');
-    Serial.print(y); Serial.print('\t');
-    Serial.print(z); Serial.println();
-  }
+//////////////////////////////////////////////////////////////////////
+/* This Function is where you assign an action to each button press*/
 
-  // Magnetometer
-  if (packetbuffer[1] == 'M') {
-    float x, y, z;
-    x = parsefloat(packetbuffer+2);
-    y = parsefloat(packetbuffer+6);
-    z = parsefloat(packetbuffer+10);
-    Serial.print("Mag\t");
-    Serial.print(x); Serial.print('\t');
-    Serial.print(y); Serial.print('\t');
-    Serial.print(z); Serial.println();
-  }
+ void buttoncommands(int buttnum,boolean pressed){
 
-  // Gyroscope
-  if (packetbuffer[1] == 'G') {
-    float x, y, z;
-    x = parsefloat(packetbuffer+2);
-    y = parsefloat(packetbuffer+6);
-    z = parsefloat(packetbuffer+10);
-    Serial.print("Gyro\t");
-    Serial.print(x); Serial.print('\t');
-    Serial.print(y); Serial.print('\t');
-    Serial.print(z); Serial.println();
-  }
+   //switch statement to assign actions to different buttons
+  switch(buttnum) {
+    case 1:
+      if(pressed){
+        //Insert code to run if button 1 is pressed here
+        Serial.println("Button 1 pressed");
+      } else{
+         //Insert code to run when button 1 is released here
+        Serial.println("Button 1 released");
+      }              
+      break;
+    case 2:
+      if(pressed){
+        //Insert code to run if button 2 is pressed here
+        Serial.println("Button 2 pressed");        
+      } else{
+         //Insert code to run when button 2 is released here
+        Serial.println("Button 2 released");         
+      } 
+      break;
+    case 3:
+      if(pressed){
+        //Insert code to run if button 3 is pressed here
+         Serial.println("Button 3 pressed");       
+      } else{
+         //Insert code to run when button 3 is released here
+        Serial.println("Button 3 released");         
+      } 
+      break;
+    case 4:
+      if(pressed){
+        //Insert code to run if button 4 is pressed here
+        Serial.println("Button 4 pressed");        
+      } else{
+         //Insert code to run when button 4 is released here
+        Serial.println("Button 4 released");         
+      } 
+      break;
+    case 5:
+      if(pressed){
+        //Insert code to run if button 5 is pressed here
+         Serial.println("Button 5 pressed");       
+      } else{
+         //Insert code to run when button 5 is released here
+        Serial.println("Button 5 released");         
+      } 
+      break;
+    case 6:
+      if(pressed){
+        //Insert code to run if button 6 is pressed here
+        Serial.println("Button 6 pressed");        
+      } else{
+         //Insert code to run when button 6 is released here
+        Serial.println("Button 6 released");         
+      } 
+      break;
+    case 7:
+      if(pressed){
+        //Insert code to run if button 7 is pressed here
+         Serial.println("Button 7 pressed");       
+      } else{
+         //Insert code to run when button 7 is released here
+        Serial.println("Button 7 released");        
+      } 
+      break;
+    case 8:
+      if(pressed){
+        //Insert code to run if button 8 is pressed here
+         Serial.println("Button 8 pressed");       
+      } else{
+         //Insert code to run when button 8 is released here
+        Serial.println("Button 8 released");         
+      } 
+      break;
+    default:
+         //Code here will never run since this function is only called when a command is sent
+      break;               
+    }
+ }
 
-  // Quaternions
-  if (packetbuffer[1] == 'Q') {
-    float x, y, z, w;
-    x = parsefloat(packetbuffer+2);
-    y = parsefloat(packetbuffer+6);
-    z = parsefloat(packetbuffer+10);
-    w = parsefloat(packetbuffer+14);
-    Serial.print("Quat\t");
-    Serial.print(x); Serial.print('\t');
-    Serial.print(y); Serial.print('\t');
-    Serial.print(z); Serial.print('\t');
-    Serial.print(w); Serial.println();
-  }
-}
+ 
