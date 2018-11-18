@@ -9,8 +9,7 @@ In order to keep costs per bot down it was decided to go with an Arduino based r
 
 ## Bill of Materials:
 
-
-## Instructions:
+## Step by Step Instructions:
 
 ### Arduino Setup Instructions:
 
@@ -21,11 +20,11 @@ In order to keep costs per bot down it was decided to go with an Arduino based r
 5. Open example sketch Blink
   Go to File>Examples>01.Basics> “Blink”
 6. Set your board type to UNO
-  * Tools>Board>”Arduino/Genuino UNO”
+   * Tools>Board>”Arduino/Genuino UNO”
 7. Set your COMM port
-  * Tools>Port> “This value will vary depending on what USB port you are plugged into.  It should be something like “COM4 (Arduino/Genuino)”.
+   * Tools>Port> “This value will vary depending on what USB port you are plugged into.  It should be something like “COM4 (Arduino/Genuino)”.
 8. Upload sketch to arduino
-  * Click upload button at top or Sketch>Upload
+   * Click upload button at top or Sketch>Upload
 9. Sketch should upload successfully to arduino and onboard led should start blinking.
 10. Bonus: Try modifying the delay values on lines 34 and 36 then re-uploading the sketch.
 11. Side note:  I prefer the IDE to show line numbers to make debugging easier.  To enable this go to File>preferences and check the box that says “Display Line Numbers”
@@ -56,10 +55,37 @@ In order to keep costs per bot down it was decided to go with an Arduino based r
    * Turn on Gyro then look at the serial display as you move your phone around.
    * Do the same for the accelerometer
 
-### Importing Code from this Git Repo
-1. 
+### Testing Code from this Git Repo
+1. Download this repo as a ZIP file
+   * Green button at the top right of this page "Clone or Download"
+2. Extract the entire folder to your desktop or location of your choice
+3. Open up folder
+4. Double click on "Magma_Mini_Bot-master.ino"
+5. Arduino IDE should open up Sketch with all required files present
+6. Compile program to make sure there are no issues. 
+7. Load program onto your Arduino/BLE shield board
+8. Open the serial monitor as you did before to 115200 baud
+9. Open up Adafruit Mobile App and connect via the controller module
+10. Button presses should be indicated via the serial monitor
 
-Resources:
+## Code Organization:
+
+### Summary
+
+This code was built using the Adafruit Bluefruit example code as a base. In an attempt to provide a safe simple path to a drivable robot the code that students need to modify was extracted into two files (MiniBot.cpp and MiniBot.h).  In order to get a drivable robot students should only have to modify sections of the code associated with each button press or release in Minibot.cpp.
+
+### Safety Features
+
+1. Bluetooth connection dependent:  Commands can only be executed when the BLE shield is connected to the controller.  If the connection fails during operation a "stop_all_motors" function is called to immediately stop the robot's movement.  
+   * *The stop_all_motors functioni will have to be modified to include any motors added by each team. Recommend testing this feature immediately after each movement is added.
+   * *Since this safety feature is dependent on the program executing special care will need to be taken to ensure students do not add any infinite loops.  Potential inclusion of a watchdog timer or similar feature that will reset arduino in this event may need to be added.
+
+### Autonomous Mode
+
+A safe approach to autonomous mode still needs to be determined.  Proposal will be to tie the autonomous operation to one of the four available buttons.  The robot will begin autonomous mode when the button is pressed and end autonomous mode when the button is released.
+
+
+## Resources:
 
 1. BLE Shield: <https://learn.adafruit.com/adafruit-bluefruit-le-shield?view=all>
 2. Arduino IDE <https://www.arduino.cc/en/Main/Software>
