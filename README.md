@@ -84,6 +84,20 @@ This code was built using the Adafruit Bluefruit example code as a base. In an a
 
 A safe approach to autonomous mode still needs to be determined.  Proposal will be to tie the autonomous operation to one of the four available buttons.  The robot will begin autonomous mode when the button is pressed and end autonomous mode when the button is released.
 
+## Motor Control Notes:
+
+Motor control will utilize two Cytron MD30C's which are designed to drive a medium to high power DC Brushed motor with current capacity up to 80A peak and 30A continuously.  The MD30C is capable of operating in two modes 1) Sign-magnitude mode or 2)Locked anti-phase mode.  In order to simplify wiring and coding we will be using the second option for control. 
+
+In order to use the MD30C in Locked anti-phase mode we will need to do a few things: 
+1. Move Jumper "JP6" from INT PWM to EXT PWM.  See page 6 of the user manual for a picture.
+2. Connect the PWM input pin of the MD30C to +5VDC
+3. Connect the PWM pin of the Arduino to the DIR pin of the MD30C
+
+In this configuration the motor will operate as follows:
+1. Motor will stop if the Duty Cylce = 50% (PWM value = 127)
+2. Motor will run forward if the duty cycle is > 50% (PWM value > 127)
+3. Motor will run backward if the duty cycle is < 50% (PWM value < 127)
+
 
 ## Resources:
 
