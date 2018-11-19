@@ -89,9 +89,21 @@
 
 void stop_all_motors(void){
 
-  //assumes single pin PWM output to motors
+  //Add any motors added to to bot to this function
 
   analogWrite(MOTOR_1_PWM_PIN, 127);
   analogWrite(MOTOR_2_PWM_PIN, 127);
 
+}
+
+//// Function to ENABLE motors, DO NOT CHANGE
+
+void enable_motors(void) {
+  digitalWrite(MOTOR_ENABLE_PIN, HIGH);
+}
+
+//// Function to DISABLE motors, DO NOT CHANGE
+
+void disable_motors(void) {
+  digitalWrite(MOTOR_ENABLE_PIN, LOW);
 }
