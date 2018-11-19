@@ -1,6 +1,8 @@
 #include <string.h>
 #include <Arduino.h>
 #include <SPI.h>
+#include <avr/wdt.h>
+
 #include "Adafruit_BLE.h"
 #include "Adafruit_BluefruitLE_SPI.h"
 #include "Adafruit_BluefruitLE_UART.h"
@@ -81,6 +83,18 @@ void setup(void)
 
   ble.verbose(false);  // debug info is a little annoying after this point!
 
+  /*************************************************************/
+  /*!
+   * Mini bot pin declarations here
+   */
+   /************************************************************/
+
+   pinMode(MOTOR_1_PWM_PIN, OUTPUT);  ///Motor #1 PWM setup as output, see Minibot.h for pin assignment (default is 9)
+   pinMode(MOTOR_2_PWM_PIN, OUTPUT);  ///Motor #2 PWM pin setup as output, see Minibot.h for pin assignment (default is 10)
+   pinMode(MOTOR_ENABLE_PIN, OUTPUT); ///Motor enable pin, will connect to both motor controllers PWM pin (default is 12)
+
+  disable_motors(); //ensure that bot boots up with motors disabled.
+
   /* Wait for connection */
   while (! ble.isConnected()) {
       delay(500);
@@ -90,16 +104,12 @@ void setup(void)
   Serial.println( F("Switching to DATA mode!") );
   ble.setMode(BLUEFRUIT_MODE_DATA);
 
-  Serial.println(F("******************************"));
+  Serial.println(F("******************************"));  
 
-  /*************************************************************/
-  /*!
-   * Mini bot pin declarations here
-   */
-   /************************************************************/
+   wdt_enable(WDTO_2S); ///watchdog timer enable for 2s, 
 
-   pinMode(MOTOR_1_PWM_PIN, OUTPUT);  ///Motor #1s PWM setup as output, see Minibot.h for pin assignment (default is 9)
-   pinMode(MOTOR_2_PWM_PIN, OUTPUT);  ///Motor #2 PWM pin setup as output, see Minibot.h for pin assignment (default is 10)
+   stop_all_motors();  //Ensure that when motors turn on they arent moving
+   enable_motors();  // Once bluetooth is connected enable motors
 
 }
 
@@ -110,7 +120,8 @@ void setup(void)
 /**************************************************************************/
 void loop(void)
 {
-  
+
+    wdt_reset();  //reset the watchdog timer
 
   /*enclose all code within this conditional statement so that nothing runs if you lose blue tooth connectivity*/
      if (ble.isConnected()) {  
