@@ -91,7 +91,8 @@ Motor control will utilize two Cytron MD30C's which are designed to drive a medi
 In order to use the MD30C in Locked anti-phase mode we will need to do a few things: 
 1. Move Jumper "JP6" from INT PWM to EXT PWM.  See page 6 of the user manual for a picture.
 2. Connect the PWM input pin of the MD30C to +5VDC
-3. Connect the PWM pin of the Arduino to the DIR pin of the MD30C
+3. Connect PWM pin of the Arduino to the DIR pin of the MD30C
+4. Connect a Digital Output pin of the Arduino to the PWM pin of the MD30C, HIGH will enable the motors, LOW will disable them.
 
 In this configuration the motor will operate as follows:
 1. Motor will stop if the Duty Cylce = 50% (PWM value = 127)
