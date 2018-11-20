@@ -113,6 +113,8 @@ In this configuration the motor will operate as follows:
 <https://tutorial.cytron.io/2013/07/29/controlling-md10c-with-arduino/>
 5. Arduino Tutorial Lab software
 <http://fritzing.org/home/>
+6. Arduino 101 Presentation
+<https://docs.google.com/presentation/d/1fccgT9k_PEGMhfhKkyhitRH8724WnI6jg2k4WSA4pfA/edit?usp=sharing>
 
 
 
