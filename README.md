@@ -1,5 +1,6 @@
 # Magma_Mini_Bot
 
+This document: https://github.com/dkaulukukui/Magma_Mini_Bot/blob/master/README.md
 
 ## INTROUDUCTION: 
 
@@ -80,6 +81,8 @@ This code was built using the Adafruit Bluefruit example code as a base. In an a
    * *The stop_all_motors functioni will have to be modified to include any motors added by each team. Recommend testing this feature immediately after each movement is added.
    * *Since this safety feature is dependent on the program executing special care will need to be taken to ensure students do not add any infinite loops.  Potential inclusion of a watchdog timer or similar feature that will reset arduino in this event may need to be added.
 
+2. Arduino Watchdog Timer: The onboard watch dog timer feature of the arudino has been enabled to 2 seconds.  If the  wdt_reset(); function is not called within 2 seconds the arduino will reset itself and boot into the diabled state.  The intent is to prevent any inadvertent infinite loop conditions where students lose positive control of the robot.  Any programmed in routines with built in delays will have to take this into account.
+
 ### Autonomous Mode
 
 A safe approach to autonomous mode still needs to be determined.  Proposal will be to tie the autonomous operation to one of the four available buttons.  The robot will begin autonomous mode when the button is pressed and end autonomous mode when the button is released.
@@ -108,6 +111,9 @@ In this configuration the motor will operate as follows:
 <https://docs.google.com/document/d/178uDa3dmoG0ZX859rWUOS2Xyafkd8hSsSET5-ZLXMYQ/edit>
 4. Motor Driver Tutorial
 <https://tutorial.cytron.io/2013/07/29/controlling-md10c-with-arduino/>
+5. Arduino Tutorial Lab software
+<http://fritzing.org/home/>
+
 
 
 
