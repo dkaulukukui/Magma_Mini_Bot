@@ -121,6 +121,7 @@ In this configuration the motor will operate as follows:
 3. Motor Driver Manual
 <https://docs.google.com/document/d/178uDa3dmoG0ZX859rWUOS2Xyafkd8hSsSET5-ZLXMYQ/edit>
 4. Motor Driver Tutorials
+<https://tutorial.cytron.io/2013/07/29/controlling-md10c-with-arduino/>
 <https://www.instructables.com/lesson/Controlling-Motor-Speed/>
 5. Arduino Tutorial Lab software
 <http://fritzing.org/home/>
