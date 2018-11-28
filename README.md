@@ -47,7 +47,7 @@ In order to keep costs per bot down it was decided to go with an Arduino based r
    * Change the baud rate from 9600 to 115200. There is a drop down box in the lower right corner of the screen to do so.  You should see some text appearing which starts with ” Adafruit Bluefruit App Controller Example”
 7. Open up the Adafruit BluefruitLE app on your mobile device and connect to the arduino
    * Note: Ensure that bluetooth is enable on your device
-   *You should see a device listed at the bottom that says “Adafruit Bluefruit LE”, click on the connect button to connect.
+   * You should see a device listed at the bottom that says “Adafruit Bluefruit LE”, click on the connect button to connect.
    * The device should now be connected and be showing you signal strength in dBM and a list of modules.  We are going to select the controller module. Click on the controller module.
    * On the next screen will display a number of data streams to turn on, these would allow you to control the device using motion data from your mobile device, we are not going to use those for now.  Click on the control pad option at the bottom. You should now see an array of direction arrows and 4 buttons.  
    * Start mashing buttons and take a look at the serial monitor on your computer.  You should see some text indicators showing each time a button is pressed and release.
@@ -85,7 +85,18 @@ This code was built using the Adafruit Bluefruit example code as a base. In an a
 
 ### Autonomous Mode
 
-A safe approach to autonomous mode still needs to be determined.  Proposal will be to tie the autonomous operation to one of the four available buttons.  The robot will begin autonomous mode when the button is pressed and end autonomous mode when the button is released.
+The Autonomous code was consolidated and seperated for easy of use.  A switching function (Autobot) was added to button 2 in Minibot.cpp whose input will need to be modified depending on the auto mode the robot will be running in. The code will need to be reloaded for each auto mode (We can change this to switch inputs if we dont want to reload code every time we change the mode). The button modes are defined as integers in auto.h so students will only need to change the string to one of the 3 possibilities:
+  * LOOP_MODE              
+  * FIGURE_EIGHT_MODE     
+  * DESTRUCT_MODE   
+  
+Each one of the above modes corresponds to the code in one of the 3 functions in auto.cpp
+  * loopauto();
+  * figure_eight_auto();
+  * destruct_auto();
+  
+Students will only need to modify the code in each of these functions to set their autonomous routines.
+
 
 ## Motor Control Notes:
 
@@ -109,12 +120,16 @@ In this configuration the motor will operate as follows:
 2. Arduino IDE <https://www.arduino.cc/en/Main/Software>
 3. Motor Driver Manual
 <https://docs.google.com/document/d/178uDa3dmoG0ZX859rWUOS2Xyafkd8hSsSET5-ZLXMYQ/edit>
-4. Motor Driver Tutorial
+4. Motor Driver Tutorials
 <https://tutorial.cytron.io/2013/07/29/controlling-md10c-with-arduino/>
+<https://www.instructables.com/lesson/Controlling-Motor-Speed/>
 5. Arduino Tutorial Lab software
 <http://fritzing.org/home/>
 6. Arduino 101 Presentation
 <https://docs.google.com/presentation/d/1fccgT9k_PEGMhfhKkyhitRH8724WnI6jg2k4WSA4pfA/edit?usp=sharing>
+7. Example code
+<https://github.com/CytronTechnologies/Arduino_MD10C>
+
 
 
 
