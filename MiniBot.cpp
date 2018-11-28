@@ -1,6 +1,7 @@
 #include <string.h>
 #include <Arduino.h>
 #include "MiniBot.h"
+#include "Auto.h"
 
 //////////////////////////////////////////////////////////////////////
 /* This Function is where you assign an action to each button press*/
@@ -18,13 +19,23 @@
         Serial.println("Button 1 released");
       }              
       break;
-    case 2:
+    case 2:   //// Button 2 is reserved for enabling the autonomous robot mode
       if(pressed){
-        //Insert code to run if button 2 is pressed here
-        Serial.println("Button 2 pressed");        
+        Serial.println("Button 2 pressed");    
+        ////////////////////////////////////////////////////////////////////////////////////////
+        ///// Change input to the autobot function to determine what autonomous routine to run//
+        // "LOOP_MODE" for autonomous loop function                                           //
+        // "FIGURE_EIGHT_MODE" for autonomous figure 8 mode                                   //
+        // "DESTRUCT_MODE" for autonomous destruction derby mode                              //
+        ////////////////////////////////////////////////////////////////////////////////////////
+
+        Autobot(LOOP_MODE); 
+        
       } else{
-         //Insert code to run when button 2 is released here
-        Serial.println("Button 2 released");         
+        
+        Serial.println("Button 2 released");  
+        stop_all_motors();  //stop everything when button 2 is released
+           
       } 
       break;
     case 3:
